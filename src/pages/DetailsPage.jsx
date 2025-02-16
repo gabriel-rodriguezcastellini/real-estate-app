@@ -1,12 +1,20 @@
 import { useParams } from "react-router-dom";
 import useFetchListings from "../hooks/useFetchListings";
+import { useSavedProperties } from "../context/SavedPropertiesContext";
+import ContactAgentForm from "../components/ContactAgentForm";
 
 const DetailsPage = () => {
   const { listings } = useFetchListings();
   const { id } = useParams();
   const listing = listings.find((item) => item.id === Number(id));
+  const { addProperty, openModal } = useSavedProperties();
 
   if (!listing) return <p>Listing not found.</p>;
+
+  const handleSaveProperty = () => {
+    addProperty(listing);
+    openModal();
+  };
 
   return (
     <div className="p-6">
@@ -21,36 +29,16 @@ const DetailsPage = () => {
         {listing.bedrooms} Beds | {listing.bathrooms} Baths | ${listing.price}
       </p>
 
+      <button
+        onClick={handleSaveProperty}
+        className="bg-yellow-500 text-white p-2 rounded mt-4"
+      >
+        Save Property
+      </button>
+
       <div className="mt-4">
         <h2 className="text-xl font-semibold">Contact Agent</h2>
-        <form className="flex flex-col gap-2">
-          <input
-            type="text"
-            placeholder="Full Name"
-            required
-            className="border p-2"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            className="border p-2"
-          />
-          <input
-            type="tel"
-            placeholder="Phone"
-            required
-            className="border p-2"
-          />
-          <textarea
-            placeholder="Comments"
-            required
-            className="border p-2"
-          ></textarea>
-          <button className="bg-green-500 text-white p-2 rounded">
-            Contact Now
-          </button>
-        </form>
+        <ContactAgentForm />
       </div>
     </div>
   );
