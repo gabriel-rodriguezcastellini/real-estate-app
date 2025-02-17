@@ -4,33 +4,30 @@ import { useSavedProperties } from "../context/SavedPropertiesContext";
 import ContactAgentForm from "../components/ContactAgentForm";
 
 const DetailsPage = () => {
-  const { listings } = useFetchListings();
+  const { listings, loading } = useFetchListings();
   const { id } = useParams();
-  const listing = listings.find((item) => item.id === Number(id));
-  const { addProperty, openModal } = useSavedProperties();
+
+  if (loading) return <p>Loading...</p>;
+
+  const listing = listings.find((item) => item.Id.toString() === id);
 
   if (!listing) return <p>Listing not found.</p>;
 
-  const handleSaveProperty = () => {
-    addProperty(listing);
-    openModal();
-  };
-
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold">{listing.title}</h1>
+      <h1 className="text-2xl font-bold">{listing.Title}</h1>
       <img
-        src={listing.image}
-        alt={listing.title}
+        src={listing.PictureURL}
+        alt={listing.Title}
         className="w-full h-60 object-cover rounded"
       />
-      <p>{listing.description}</p>
+      <p>{listing.Description}</p>
       <p>
-        {listing.bedrooms} Beds | {listing.bathrooms} Baths | ${listing.price}
+        {listing.Bedrooms} Beds | {listing.Bathrooms} Baths | ${listing.Price}
       </p>
 
       <button
-        onClick={handleSaveProperty}
+        onClick={() => {}}
         className="bg-yellow-500 text-white p-2 rounded mt-4"
       >
         Save Property

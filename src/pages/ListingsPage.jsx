@@ -17,10 +17,10 @@ const ListingsPage = () => {
 
   const filteredListings = listings.filter((listing) => {
     return (
-      (filters.bedrooms ? listing.bedrooms >= filters.bedrooms : true) &&
-      (filters.bathrooms ? listing.bathrooms >= filters.bathrooms : true) &&
-      (filters.parking ? listing.parkingSpaces >= filters.parking : true) &&
-      (filters.price ? listing.price <= filters.price : true)
+      (filters.bedrooms ? listing.Bedrooms >= filters.bedrooms : true) &&
+      (filters.bathrooms ? listing.Bathrooms >= filters.bathrooms : true) &&
+      (filters.parking ? listing.ParkingSpaces >= filters.parking : true) &&
+      (filters.price ? listing.Price <= filters.price : true)
     );
   });
 
