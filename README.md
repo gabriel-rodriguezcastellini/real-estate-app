@@ -1,8 +1,9 @@
-# React + Vite
+## Architecture & Solution
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The application is built using React and Vite with a component-based architecture, emphasizing scalability and modularity:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Routing:** Managed by [`react-router-dom`](https://reactrouter.com), routing is implemented with routes defined in [src/App.jsx](src/App.jsx) that navigate between pages such as [ListingsPage](src/pages/ListingsPage.jsx) and [DetailsPage](src/pages/DetailsPage.jsx).
+- **State Management:** Global state for saved properties is maintained using the Context API via [`SavedPropertiesContext`](src/context/SavedPropertiesContext.jsx).
+- **Data Handling:** Listings data is loaded from [src/data/listings.json](src/data/listings.json) and fetched using a custom hook ([`useFetchListings`](src/hooks/useFetchListings.js)).
+- **Components:** The UI is composed of reusable components, including [`ListingCard`](src/components/ListingCard.jsx) and [`ContactAgentForm`](src/components/ContactAgentForm.jsx), ensuring a clear separation of concerns.
+- **Styling:** Styling is managed with Tailwind CSS along with additional custom CSS in [src/App.css](src/App.css) and [src/index.css](src/index.css).
