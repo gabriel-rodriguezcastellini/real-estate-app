@@ -1,37 +1,37 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const SavedPropertiesContext = createContext();
 
 export const SavedPropertiesProvider = ({ children }) => {
   const [savedProperties, setSavedProperties] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("savedProperties");
+    if (stored) {
+      setSavedProperties(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedProperties", JSON.stringify(savedProperties));
+  }, [savedProperties]);
 
   const addProperty = (property) => {
     setSavedProperties((prev) => {
-      if (!prev.find((p) => p.id === property.id)) {
-        return [...prev, property];
+      if (prev.some((p) => p.Id === property.Id)) {
+        return prev;
       }
-      return prev;
+      return [...prev, property];
     });
   };
 
   const removeProperty = (id) => {
-    setSavedProperties((prev) => prev.filter((property) => property.id !== id));
+    setSavedProperties((prev) => prev.filter((p) => p.Id !== id));
   };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <SavedPropertiesContext.Provider
-      value={{
-        savedProperties,
-        addProperty,
-        removeProperty,
-        isModalOpen,
-        openModal,
-        closeModal,
-      }}
+      value={{ savedProperties, addProperty, removeProperty }}
     >
       {children}
     </SavedPropertiesContext.Provider>

@@ -20,7 +20,7 @@ const ListingCard = ({ listing }) => {
       <div className="mt-auto">
         <Link
           to={`/listing/${listing.Id}`}
-          className="block mt-4 bg-blue-500 text-white text-center py-1 rounded"
+          className="block mt-4 bg-blue-500 text-white text-center py-1 rounded hover:text-white"
         >
           View Details
         </Link>

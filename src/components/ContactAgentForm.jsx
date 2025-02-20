@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const ContactAgentForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
     comments: "",
@@ -17,106 +17,106 @@ const ContactAgentForm = () => {
   };
 
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
   };
 
-  const validatePhone = (phone) => {
-    const phoneRegex = /^\d+$/;
-    return phoneRegex.test(phone);
-  };
+  const validatePhone = (phone) => /^\d+$/.test(phone);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const errors = [];
+    if (!formData.fullName) errors.push("Full Name is required.");
+    if (!formData.email) errors.push("Email is required.");
+    else if (!validateEmail(formData.email))
+      errors.push("Invalid email format.");
+    if (!formData.phone) errors.push("Phone is required.");
+    else if (!validatePhone(formData.phone))
+      errors.push("Phone must contain only digits.");
+    if (!formData.comments) errors.push("Comments are required.");
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.comments
-    ) {
-      setError("All fields are required.");
-      return;
-    }
-    if (!validateEmail(formData.email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (!validatePhone(formData.phone)) {
-      setError("Phone number must contain only digits.");
+    if (errors.length > 0) {
+      setError(errors.join("\n"));
+      setSuccess("");
       return;
     }
 
+    setError("");
     setSuccess("Message sent successfully!");
-    setFormData({ name: "", email: "", phone: "", comments: "" });
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      comments: "",
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-lg shadow-md space-y-4"
-    >
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {error && (
+        <p className="text-red-500 text-sm whitespace-pre-line">{error}</p>
+      )}
       {success && <p className="text-green-500 text-sm">{success}</p>}
-      <div className="flex flex-col">
-        <label htmlFor="name" className="mb-1 font-medium">
+
+      <div>
+        <label htmlFor="fullName" className="block font-medium mb-1">
           Full Name
         </label>
         <input
-          id="name"
+          id="fullName"
+          name="fullName"
           type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
+          value={formData.fullName}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded w-full p-2"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="email" className="mb-1 font-medium">
+
+      <div>
+        <label htmlFor="email" className="block font-medium mb-1">
           Email
         </label>
         <input
           id="email"
-          type="email"
           name="email"
-          placeholder="Email"
+          type="text"
           value={formData.email}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded w-full p-2"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="phone" className="mb-1 font-medium">
+
+      <div>
+        <label htmlFor="phone" className="block font-medium mb-1">
           Phone
         </label>
         <input
           id="phone"
-          type="tel"
           name="phone"
-          placeholder="Phone"
+          type="text"
           value={formData.phone}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded w-full p-2"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="comments" className="mb-1 font-medium">
+
+      <div>
+        <label htmlFor="comments" className="block font-medium mb-1">
           Comments
         </label>
         <textarea
           id="comments"
           name="comments"
-          placeholder="Comments"
+          rows="4"
           value={formData.comments}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows="4"
-        ></textarea>
+          className="border border-gray-300 rounded w-full p-2"
+        />
       </div>
+
       <button
         type="submit"
-        className="w-full bg-green-500 hover:bg-green-600 text-white p-2 rounded transition-colors"
+        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
       >
         Contact Now
       </button>
