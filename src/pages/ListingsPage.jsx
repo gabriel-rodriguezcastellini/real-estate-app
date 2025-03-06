@@ -201,7 +201,7 @@ const ListingsPage = () => {
             </div>
           ) : (
             <div
-              className="grid grid-cols-4 gap-6"
+              className="grid grid-cols-3 gap-6"
               style={{ gridAutoRows: "1fr" }}
             >
               {filteredListings.map((listing) => (
